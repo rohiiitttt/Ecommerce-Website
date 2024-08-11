@@ -75,8 +75,8 @@ function ProductDetails({ onAddToCart }) {
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
           <img className="w-full lg:w-1/2 rounded-lg object-cover" src={thumbnail} alt={title} />
           <div className="flex flex-col gap-4">
-            <h1 className="text-gray-800 text-3xl lg:text-4xl font-bold">{title}</h1>
-            <h2 className="text-gray-600 text-2xl lg:text-3xl font-semibold">${price}</h2>
+            <h1 className="text-gray-800 text-2xl sm:text-3xl lg:text-4xl font-bold">{title}</h1>
+            <h2 className="text-gray-600 text-xl sm:text-2xl lg:text-3xl font-semibold">${price}</h2>
             <p className="text-lg font-medium text-gray-600 leading-relaxed">{description}</p>
             <div className="flex items-center gap-4 pt-4">
               <input
