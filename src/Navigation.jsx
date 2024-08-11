@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import { CiShoppingCart } from "react-icons/ci";
 
 function Navigation({ productCount }) {

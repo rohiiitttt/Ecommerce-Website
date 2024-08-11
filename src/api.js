@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React from 'react';
 
-export function getProductList(setProductList) { 
+export function getProductList() { 
   return axios.get("https://dummyjson.com/products").then(function(response){
     return response.data.products;
   });

@@ -1,6 +1,4 @@
-import React from 'react';
-
-function Footer (props)
+function Footer ()
 {
   return(
     <div className = "flex bg-gray-500 justify-between p-4" >
