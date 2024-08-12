@@ -9,8 +9,8 @@ function Navigation({ productCount }) {
         src="https://static.vecteezy.com/system/resources/previews/019/766/240/original/amazon-logo-amazon-icon-transparent-free-png.png" 
         alt="Logo"
       />
-      <button className="relative mr-2 sm:mr-10 flex items-center space-x-2 border border-white rounded-lg p-0.5">
-        <div className="text-xl font-sans text-white cursor-pointer border-r border-white pr-2">
+      <button className="relative mr-2 sm:mr-10 flex items-center space-x-2 p-0.5">
+        <div className="text-xl font-sans text-white border-r border-white pr-2">
           Your Cart
         </div>
         <CiShoppingCart className="text-white cursor-pointer" size={38} />
