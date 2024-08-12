@@ -9,12 +9,18 @@ function Navigation({ productCount }) {
         src="https://static.vecteezy.com/system/resources/previews/019/766/240/original/amazon-logo-amazon-icon-transparent-free-png.png" 
         alt="Logo"
       />
-      <div className="relative mr-4 sm:mr-10">
-        <CiShoppingCart className="text-white" size={38} />
-        <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold">
+      <button className="relative mr-2 sm:mr-10 flex items-center space-x-2 border border-white rounded-lg p-0.5">
+        <div className="text-xl font-sans text-white cursor-pointer border-r border-white pr-2">
+          Your Cart
+        </div>
+        <CiShoppingCart className="text-white cursor-pointer" size={38} />
+        <span 
+          className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold"
+          aria-label={`Cart with ${productCount} items`}
+        >
           {productCount}
         </span>
-      </div>
+      </button>
     </div>
   );
 }
