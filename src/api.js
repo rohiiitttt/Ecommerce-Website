@@ -6,5 +6,5 @@ export function getProductList() {
   });
 }
 export function getProductData(id){
-  return axios.get(`https://dummyjson.com/products/` + id);
+  return axios.get(`https://dummyjson.com/products/` + id).data;
 }
