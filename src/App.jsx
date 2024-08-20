@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, useCallback, useMemo } from 'react'; 
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./Navigation";
 import ProductListPage from "./ProductListPage";
@@ -6,8 +6,11 @@ import Footer from "./Footer";
 import ProductDetail from "./ProductDetail";
 import Cart from './Cart';
 import { getProductData } from './api';
+import LoginPage from './LoginPage';
+import SignUp from './SignUp';
 
 function App() {
+  console.log("App running...");
   const savedDataString = localStorage.getItem("cartItems") || "{}";
   const savedData = JSON.parse(savedDataString);
 
@@ -31,7 +34,7 @@ function App() {
     fetchCartProducts();
   }, []); // Empty dependency array means this useEffect runs only once when the component mounts
 
-  const handleAddToCart = (productId, count) => {
+  const handleAddToCart = useCallback((productId, count) => {
     const id = Number(productId);
     const quantity = Number(count);
     let oldCart = cart[id] || 0;
@@ -39,11 +42,13 @@ function App() {
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("cartItems", cartString);
-  };
+  },[cart]);
 
-  const totalCount = Object.keys(cart).reduce((previous, current) => {
-    return previous + cart[Number(current)];
-  }, 0);
+  const totalCount = useMemo(() => {
+    return Object.keys(cart).reduce((previous, current) => {
+      return previous + cart[Number(current)];
+    }, 0);
+  }, [cart]);
 
   return (
     <div className="flex flex-col gap-1">
@@ -53,6 +58,8 @@ function App() {
         <Route path="/" element={<ProductListPage />} />
         <Route path="/moredetails/:id" element={<ProductDetail onAddToCart={handleAddToCart} />} />
         <Route path="/cart" element={<Cart cartProducts={cartProducts} />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
 
       <Footer />

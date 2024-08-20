@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import productnotfound from './productnotfound.jpg';
 
 function NotFound() {
+  console.log("notfound running...");
   return (
     <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-zinc-600 mb-6">Product Not Found</h1>
@@ -18,4 +19,4 @@ function NotFound() {
   );
 }
 
-export default NotFound;
+export default memo(NotFound);

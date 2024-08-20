@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 function Loading() {
+  console.log("loading running...");
   return (
     <div className="flex justify-center items-center h-screen p-4">
       <div className="text-center">
@@ -11,4 +12,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default memo(Loading);

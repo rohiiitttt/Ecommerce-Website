@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 function Product({ category, title, price, id, thumbnail }) {
+  console.log("product running...");
   return (
     <div className="w-full sm:w-80 p-4 bg-white rounded-md shadow-lg">
       <div className="w-full h-64 overflow-hidden rounded-t-md">
@@ -22,4 +23,4 @@ function Product({ category, title, price, id, thumbnail }) {
   );
 }
 
-export default Product;
+export default memo(Product);

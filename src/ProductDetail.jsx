@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductData } from './api';
 import Loading from './Loading';
 import NotFound from './NotFound';
 
 function ProductDetails({ onAddToCart }) {
+  console.log("productDetail running...");
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,13 +30,13 @@ function ProductDetails({ onAddToCart }) {
       });
   }, [id]);
 
-  function handleCountChange(event) {
+  const handleCountChange = useCallback((event) =>  {
     setCount(event.target.value);
-  }
+  },[]);
 
-  function handleButtonClick() {
+  const handleButtonClick = useCallback(() =>  {
     onAddToCart(id, count);
-  }
+  },[id,count,onAddToCart]);
 
   if (loading) {
     return <Loading />;

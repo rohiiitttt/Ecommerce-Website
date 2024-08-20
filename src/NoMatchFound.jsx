@@ -1,7 +1,7 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import { memo } from "react";
 
 function NoMatchFound() {
+  console.log("nomatch running...");
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <h1 className="text-6xl font-extrabold text-red-500 mb-4">404</h1>
@@ -13,4 +13,4 @@ function NoMatchFound() {
   );
 }
 
-export default NoMatchFound;
+export default memo(NoMatchFound);
