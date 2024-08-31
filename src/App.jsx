@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'; 
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./Navigation";
 import ProductListPage from "./ProductListPage";
 import Footer from "./Footer";
 import ProductDetail from "./ProductDetail";
-import Cart from './Cart';
-import { getProductData } from './api';
+import CartPage from "./CartPage";  // Corrected import name to match the component name.
+import { getProductData } from "./api";
 import LoginPage from './LoginPage';
 import SignUp from './SignUp';
 
@@ -20,12 +20,12 @@ function App() {
   useEffect(() => {
     const fetchCartProducts = async () => {
       const myCart = { 1: 4, 2: 5, 6: 2 };
-      const promises = Object.keys(myCart).map(productId => getProductData(productId));
+      const promises = Object.keys(myCart).map((productId) => getProductData(productId));
 
       try {
         const response = await Promise.all(promises);
         setCartProducts(response);
-        console.log("Bigger Promise Data:", response);
+        console.log("Fetched cart products:", response);
       } catch (error) {
         console.error("Failed to fetch cart products:", error);
       }
@@ -42,12 +42,15 @@ function App() {
     setCart(newCart);
     const cartString = JSON.stringify(newCart);
     localStorage.setItem("cartItems", cartString);
-  },[cart]);
+  }, [cart]);
+
+  const updateCart = (newCart) => {
+    setCart(newCart);
+    localStorage.setItem("cartItems", JSON.stringify(newCart));
+  };
 
   const totalCount = useMemo(() => {
-    return Object.keys(cart).reduce((previous, current) => {
-      return previous + cart[Number(current)];
-    }, 0);
+    return Object.values(cart).reduce((previous, current) => previous + current, 0);
   }, [cart]);
 
   return (
@@ -55,11 +58,11 @@ function App() {
       <Navigation productCount={totalCount} />
 
       <Routes>
-        <Route path="/" element={<ProductListPage />} />
-        <Route path="/moredetails/:id" element={<ProductDetail onAddToCart={handleAddToCart} />} />
-        <Route path="/cart" element={<Cart cartProducts={cartProducts} />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/moredetails/:id" element={<ProductDetail onAddToCart={handleAddToCart}/>}/>
+        <Route path="/" element={<ProductListPage />}/>
+        <Route path="/signup" element={<SignUp />}/>
+        <Route path="/cart" element={<CartPage cart={cart} updateCart={updateCart}/>}/>
       </Routes>
 
       <Footer />

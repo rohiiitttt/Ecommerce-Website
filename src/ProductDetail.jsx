@@ -5,7 +5,6 @@ import Loading from './Loading';
 import NotFound from './NotFound';
 
 function ProductDetails({ onAddToCart }) {
-  console.log("productDetail running...");
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,8 +16,8 @@ function ProductDetails({ onAddToCart }) {
     setError(false);
     getProductData(id)
       .then(response => {
-        if (response.data) {
-          setProduct(response.data);
+        if (response) {
+          setProduct(response);
         } else {
           setError(true);
         }
@@ -31,12 +30,13 @@ function ProductDetails({ onAddToCart }) {
   }, [id]);
 
   const handleCountChange = useCallback((event) =>  {
-    setCount(event.target.value);
+    const value = parseInt(event.target.value, 10);
+    setCount(value > 0 ? value : 1); // Ensure count is always at least 1
   },[]);
 
   const handleButtonClick = useCallback(() =>  {
     onAddToCart(id, count);
-  },[id,count,onAddToCart]);
+  }, [id, count, onAddToCart]);
 
   if (loading) {
     return <Loading />;
@@ -49,39 +49,39 @@ function ProductDetails({ onAddToCart }) {
   const { title, price, thumbnail, description } = product;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container p-4 mx-auto">
       <Link
         to="/"
-        className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 px-4 py-2 my-2 text-white rounded-md font-medium inline-block"
+        className="inline-block px-4 py-2 my-2 font-medium text-white transition-colors duration-300 bg-blue-500 rounded-md hover:bg-blue-600"
       >
         Back
       </Link>
-      <div className="bg-white rounded-lg shadow-lg p-6 my-8">  
-        <div className="flex justify-between items-center mb-6">
+      <div className="p-6 my-8 bg-white rounded-lg shadow-lg">
+        <div className="flex items-center justify-between mb-6">
           {parseInt(id) > 1 && (
             <Link
               to={`/moredetails/${parseInt(id) - 1}`}
-              className="bg-orange-600 hover:bg-gray-600 transition-colors duration-300 px-4 py-2 text-white rounded-md font-medium"
+              className="px-4 py-2 font-medium text-white transition-colors duration-300 bg-orange-600 rounded-md hover:bg-gray-600"
             >
               Previous
             </Link> 
           )}
           <Link
             to={`/moredetails/${parseInt(id) + 1}`}
-            className="bg-orange-600 hover:bg-gray-600 transition-colors duration-300 px-4 py-2 text-white rounded-md font-medium"
+            className="px-4 py-2 font-medium text-white transition-colors duration-300 bg-orange-600 rounded-md hover:bg-gray-600"
           >
             Next
           </Link>
         </div>
-        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-          <img className="w-full lg:w-1/2 rounded-lg object-cover" src={thumbnail} alt={title} />
+        <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
+          <img className="object-cover w-full rounded-lg lg:w-1/2" src={thumbnail} alt={title} />
           <div className="flex flex-col gap-4">
-            <h1 className="text-gray-800 text-2xl sm:text-3xl lg:text-4xl font-bold">{title}</h1>
-            <h2 className="text-gray-600 text-xl sm:text-2xl lg:text-3xl font-semibold">${price}</h2>
-            <p className="text-lg font-medium text-gray-600 leading-relaxed">{description}</p>
+            <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl lg:text-4xl">{title}</h1>
+            <h2 className="text-xl font-semibold text-gray-600 sm:text-2xl lg:text-3xl">${price}</h2>
+            <p className="text-lg font-medium leading-relaxed text-gray-600">{description}</p>
             <div className="flex items-center gap-4 pt-4">
               <input
-                className="border border-gray-300 text-gray-700 text-lg w-16 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-16 p-2 text-lg text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 min="1"
                 type="number"
                 onChange={handleCountChange}
@@ -89,7 +89,7 @@ function ProductDetails({ onAddToCart }) {
               />
               <button
                 onClick={handleButtonClick}
-                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 px-8 py-2 text-white rounded-md font-semibold"
+                className="px-8 py-2 font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md hover:bg-blue-600"
               >
                 ADD TO CART
               </button>

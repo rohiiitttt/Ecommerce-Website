@@ -1,10 +1,11 @@
+// LoginPage.jsx
 import { useState } from "react";
-import { useFormik } from "formik";
+import { Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { Link } from "react-router-dom";
+import FormikInputComponent from "./FormikInputComponent";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,101 +23,67 @@ function LoginPage() {
       .required("Password is required"),
   });
 
-  const { handleSubmit, values, handleChange, errors, handleBlur, touched} = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: callLoginAPI,
-    validationSchema: schema,
-    validateOnBlur: true,
-    validateOnChange: true,
-  });
-  
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      if (event.target.id === "email") {
-        document.getElementById("password").focus();
-        event.preventDefault();
-      } else if (event.target.id === "password") {
-        handleSubmit(event);
-      }
-    }
-  };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="bg-red-300 p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Login to MyCart</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2 sr-only">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="border border-gray-300 rounded-md w-full p-2"
-              value={values.email}
-              name="email"
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              required
-              placeholder="email"
-              onBlur={handleBlur}
-            />
-            {touched.email && errors.email && (
-              <div className="flex items-center text-red-500 text-sm mt-1">
-                <FontAwesomeIcon icon={faExclamationCircle} className="mr-1" />
-                {errors.email}
-              </div>
-            )}
-          </div>
-          <div className="mb-4 relative">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2 sr-only">
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              className="border border-gray-300 rounded-md w-full p-2"
-              value={values.password}
-              name="password"
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              required
-              placeholder="password"
-              onBlur={handleBlur}
-            />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 mr-3 text-sm"
-              onClick={togglePasswordVisibility}
-            >
-              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-            </button>
-            {touched.password && errors.password && (
-              <div className="flex items-center text-red-500 text-sm mt-1 mb-2">
-                <FontAwesomeIcon icon={faExclamationCircle} className="mr-1" />
-                {errors.password}
-              </div>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Login
-          </button>
-          <p className="text-center mt-4">
-  Do not have an Account? <Link className="text-blue-600 hover:underline" to="/signup">SignUp</Link>
-</p>
+      <div className="p-8 bg-red-300 rounded-lg shadow-md w-96">
+        <h2 className="mb-4 text-2xl font-bold">Login to MyCart</h2>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={schema}
+          onSubmit={callLoginAPI}
+          validateOnBlur
+          validateOnChange
+        >
+          {({ handleSubmit, values, handleChange, handleBlur, touched, errors }) => (
+            <form onSubmit={handleSubmit}>
+              <FormikInputComponent
+                label="Email"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="email"
+              />
 
-        </form>
+              <div className="relative mb-4">
+                <FormikInputComponent
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  placeholder="password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 mr-3 text-sm"
+                  onClick={togglePasswordVisibility}
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
+                {touched.password && errors.password && (
+                  <div className="flex items-center mt-1 mb-2 text-sm text-red-500">
+                    <FontAwesomeIcon icon={faExclamationCircle} className="mr-1" />
+                    {errors.password}
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+              >
+                Login
+              </button>
+
+              <p className="mt-4 text-center">
+                Do not have an Account? <Link className="text-blue-600 hover:underline" to="/signup">SignUp</Link>
+              </p>
+            </form>
+          )}
+        </Formik>
       </div>
     </div>
   );
