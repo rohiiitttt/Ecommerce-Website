@@ -4,10 +4,13 @@ import Navigation from "./Navigation";
 import ProductListPage from "./ProductListPage";
 import Footer from "./Footer";
 import ProductDetail from "./ProductDetail";
-import CartPage from "./CartPage";  // Corrected import name to match the component name.
+import CartPage from "./CartPage";
 import { getProductData } from "./api";
 import LoginPage from './LoginPage';
 import SignUp from './SignUp';
+import axios from "axios";
+import AuthRoute from "./AuthRoute";
+import UserRoute from "./UserRoute";
 
 function App() {
   console.log("App running...");
@@ -16,6 +19,24 @@ function App() {
 
   const [cart, setCart] = useState(savedData);
   const [cartProducts, setCartProducts] = useState([]);
+  const [user, setUser] = useState(null); // Initialize as null
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token) {
+      axios.get("https://myeasykart.codeyogi.io/me", {
+        headers: {
+          Authorization: token  , // Ensure proper Bearer token usage
+        },
+      }).then((response) => {
+        setUser(response.data);
+      }).catch(error => {
+        console.error("Failed to fetch user:", error);
+        localStorage.removeItem("token"); // Clear token if there's an error
+        setUser(null); // Reset user state
+      });
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchCartProducts = async () => {
@@ -40,8 +61,7 @@ function App() {
     let oldCart = cart[id] || 0;
     const newCart = { ...cart, [id]: oldCart + quantity };
     setCart(newCart);
-    const cartString = JSON.stringify(newCart);
-    localStorage.setItem("cartItems", cartString);
+    localStorage.setItem("cartItems", JSON.stringify(newCart));
   }, [cart]);
 
   const updateCart = (newCart) => {
@@ -55,14 +75,34 @@ function App() {
 
   return (
     <div className="flex flex-col gap-1">
-      <Navigation productCount={totalCount} />
+      <Navigation productCount={totalCount} setUser={setUser}/>
 
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/moredetails/:id" element={<ProductDetail onAddToCart={handleAddToCart}/>}/>
-        <Route path="/" element={<ProductListPage />}/>
-        <Route path="/signup" element={<SignUp />}/>
-        <Route path="/cart" element={<CartPage cart={cart} updateCart={updateCart}/>}/>
+        <Route path="/login" element={
+          <AuthRoute user={user}>
+            <LoginPage user={user} setUser={setUser} />
+          </AuthRoute>
+        } />
+        <Route path="/moredetails/:id" element={
+          <UserRoute user={user}>
+            <ProductDetail onAddToCart={handleAddToCart} />
+          </UserRoute>
+        } />
+        <Route path="/" element={
+          <UserRoute user={user}>
+            <ProductListPage />
+          </UserRoute>
+        } />
+        <Route path="/signup" element={
+          <AuthRoute user={user}>
+            <SignUp />
+          </AuthRoute>
+        } />
+        <Route path="/cart" element={
+          <UserRoute user={user}>
+            <CartPage cart={cart} updateCart={updateCart} />
+          </UserRoute>
+        } />
       </Routes>
 
       <Footer />

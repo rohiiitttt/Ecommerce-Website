@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { getProductData } from "./api";
 import Loading from "./Loading";
 import EmptyCart from "./EmptyCart";
+import { Link } from "react-router-dom";
 
 function CartPage({ cart, updateCart }) {
   const [productData, setProductData] = useState([]);
@@ -100,11 +101,13 @@ function CartPage({ cart, updateCart }) {
       {productData.map((product) => (
         <div key={product.id} className="flex items-center justify-between py-4 border-b">
           <div className="flex items-center space-x-4">
+            <Link to={`/moredetails/${product.id}`}>
             <img
               src={product.thumbnail}
               alt={product.title}
               className="object-cover w-20 h-20 rounded-md"
             />
+            </Link>
             <div>
               <h2 className="text-lg font-semibold">{product.title}</h2>
               <p className="text-gray-600">${product.price.toFixed(2)}</p>

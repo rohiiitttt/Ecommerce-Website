@@ -1,19 +1,38 @@
-import React, { memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { CiShoppingCart } from "react-icons/ci";
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
+import { IoIosLogOut } from "react-icons/io";
 
-function Navigation({ productCount }) {
+function Navigation({ productCount ,setUser}) {
   console.log("nav running...");
+  const [isLoggedin, setIsLoggedin] = useState(false);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate(); // For navigation after logout
+
+  useEffect(() => {
+    if (token) {
+      setIsLoggedin(true);
+    } else {
+      setIsLoggedin(false);
+    }
+  }, [token]);
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setUser(undefined);
+    setIsLoggedin(false);
+    <Navigate to="/login" />
+  }
 
   return (
     <div className="flex items-center justify-between p-4 bg-gray-500">
       <Link to="/">
-      <img 
-        className="h-12 ml-4 sm:ml-20" 
-        src="https://static.vecteezy.com/system/resources/previews/019/766/240/original/amazon-logo-amazon-icon-transparent-free-png.png" 
-        alt="Logo"
-      />
+        <img 
+          className="h-12 ml-4 sm:ml-20" 
+          src="https://static.vecteezy.com/system/resources/previews/019/766/240/original/amazon-logo-amazon-icon-transparent-free-png.png" 
+          alt="Logo"
+        />
       </Link>
       <div className='flex flex-row items-center justify-between gap-5'>
         <Link to="/cart">
@@ -33,6 +52,14 @@ function Navigation({ productCount }) {
         <Link to="/login">
           <FaUserCircle className="text-3xl text-white" />
         </Link>
+        {isLoggedin && (
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+          >
+            <IoIosLogOut className="text-xl" />
+          </button>
+        )}
       </div>
     </div>
   );

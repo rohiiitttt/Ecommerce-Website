@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function EmptyCart() {
   return (
@@ -6,12 +7,13 @@ function EmptyCart() {
       <div className="max-w-md p-6 text-center bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-gray-800">No Items Added</h1>
         <p className="mt-2 text-gray-600">It looks like your cart is empty. Start adding items to your cart to see them here.</p>
+        <Link to="/">
         <button
           className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onClick={() => window.location.href = '/'} // Redirect to homepage or any other page
         >
           Browse Products
         </button>
+        </Link>
       </div>
     </div>
   );
