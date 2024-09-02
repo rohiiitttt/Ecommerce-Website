@@ -1,7 +1,8 @@
-import React from "react";
 import {Navigate } from 'react-router-dom';
+import WithUser from './WithUser';
 
-function AuthRoute({ user , children}){
+function AuthRoute({user,children}){
+
 
   if(user)
     return <Navigate to="/" />
@@ -10,4 +11,4 @@ function AuthRoute({ user , children}){
     
 }
 
-export default AuthRoute;
+export default WithUser(AuthRoute);

@@ -1,14 +1,14 @@
-import React, { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { CiShoppingCart } from "react-icons/ci";
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
+import WithUser from './WithUser';
 
-function Navigation({ productCount ,setUser}) {
+function Navigation({ productCount,setUser}) {
   console.log("nav running...");
   const [isLoggedin, setIsLoggedin] = useState(false);
   const token = localStorage.getItem("token");
-  const navigate = useNavigate(); // For navigation after logout
 
   useEffect(() => {
     if (token) {
@@ -65,4 +65,4 @@ function Navigation({ productCount ,setUser}) {
   );
 }
 
-export default memo(Navigation);
+export default WithUser(memo(Navigation));

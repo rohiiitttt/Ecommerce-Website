@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import  { useState, useEffect, useMemo } from "react";
 import { getProductData } from "./api";
 import Loading from "./Loading";
 import EmptyCart from "./EmptyCart";

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Product from './Product';
 import NoMatchFound from './NoMatchFound';
 import { getProductList } from './api';
 import Loading from './Loading';
-import { Navigate } from 'react-router-dom';
 
 function ProductList() {
   console.log("ProductstPage running...");
