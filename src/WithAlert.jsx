@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {AlertContext} from "./App.jsx";
+import {AlertContext} from "./Providers/AlertProvider";
 
 function WithAlert(IncomingComponent){
   function OutgoingComponent(props){

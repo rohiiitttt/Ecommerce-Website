@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { userContext } from "./App";
+import { userContext } from "./Providers/UserProvider";
 
 function WithUser(Component) {
   return function WrappedComponent(props) {

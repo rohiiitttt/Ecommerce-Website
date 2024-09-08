@@ -1,12 +1,16 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useContext } from 'react';
 import { CiShoppingCart } from "react-icons/ci";
 import { Link, Navigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import WithUser from './WithUser';
+import { cartcontext } from './Providers/CartProvider';
+import WithCart from './WithCart';
 
-function Navigation({ productCount,setUser}) {
+function Navigation({totalCount,setUser}) {
   console.log("nav running...");
+  console.log("product Count...",totalCount);
+
   const [isLoggedin, setIsLoggedin] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -43,9 +47,9 @@ function Navigation({ productCount,setUser}) {
             <CiShoppingCart className="text-white cursor-pointer" size={32} />
             <span
               className="absolute top-0 right-0 px-2 py-1 text-xs font-bold text-white transform translate-x-1/2 -translate-y-1/2 bg-orange-500 rounded-full shadow-lg"
-              aria-label={`Cart with ${productCount} items`}
+              aria-label={`Cart with ${totalCount} items`}
             >
-              {productCount}
+              {totalCount}
             </span>
           </button>
         </Link>
@@ -65,4 +69,4 @@ function Navigation({ productCount,setUser}) {
   );
 }
 
-export default WithUser(memo(Navigation));
+export default WithCart(WithUser(memo(Navigation)));

@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductData } from './api';
 import Loading from './Loading';
 import NotFound from './NotFound';
+import { cartcontext } from './Providers/CartProvider';
+import WithCart from './WithCart';
 
-function ProductDetails({ onAddToCart }) {
+function ProductDetails({ handleAddToCart }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,8 +37,8 @@ function ProductDetails({ onAddToCart }) {
   },[]);
 
   const handleButtonClick = useCallback(() =>  {
-    onAddToCart(id, count);
-  }, [id, count, onAddToCart]);
+    handleAddToCart(id, count);
+  }, [id, count, handleAddToCart]);
 
   if (loading) {
     return <Loading />;
@@ -101,4 +103,4 @@ function ProductDetails({ onAddToCart }) {
   );
 }
 
-export default ProductDetails;
+export default WithCart(ProductDetails);
