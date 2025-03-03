@@ -3,11 +3,12 @@ import { memo } from "react";
 function Footer() {
   console.log("footer running...");
   return (
-    <div className="flex flex-col md:flex-row bg-gray-500 justify-between p-4 text-center md:text-left">
-      <p className="md:pl-36 text-white text-xs mb-2 md:mb-0">
+    <div className="flex flex-col justify-between p-4 text-center bg-gray-500 md:flex-row md:text-left">
+      <p className="mb-2 text-xs text-white md:pl-36 md:mb-0">
         Copyright © 2024 | Rohit Gupta
       </p>
-      <p className="md:pr-36 text-white text-xs">
+      <h1>Welcome to My Awesome Store</h1>
+      <p className="text-xs text-white md:pr-36">
         Powered by Rohit Gupta
       </p>
     </div>
